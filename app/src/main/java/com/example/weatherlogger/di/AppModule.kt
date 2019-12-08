@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.weatherlogger.BuildConfig
 import com.example.weatherlogger.api.ApiService
 import com.example.weatherlogger.api.LiveDataCallAdapterFactory
+import com.example.weatherlogger.repository.GpsUtils
 import com.example.weatherlogger.repository.LocationLiveData
 import dagger.Module
 import dagger.Provides
@@ -60,4 +61,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideLocationData(application: Application) = LocationLiveData(application)
+
+    @Provides
+    @Singleton
+    fun provideGpsUtils(application: Application) = GpsUtils(application)
 }

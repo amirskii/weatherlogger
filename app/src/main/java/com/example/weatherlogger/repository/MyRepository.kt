@@ -11,7 +11,8 @@ import javax.inject.Singleton
 
 @Singleton
 class MyRepository @Inject constructor(val service: ApiService,
-                                       val locationData: LocationLiveData) {
+                                       val locationData: LocationLiveData,
+                                       val gpsUtils: GpsUtils) {
 
 
     init {
