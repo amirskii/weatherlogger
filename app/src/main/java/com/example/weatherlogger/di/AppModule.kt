@@ -1,11 +1,14 @@
 package com.example.weatherlogger.di
 
 import android.app.Application
+import androidx.room.Room
 import com.example.weatherlogger.BuildConfig
 import com.example.weatherlogger.api.ApiService
 import com.example.weatherlogger.api.LiveDataCallAdapterFactory
 import com.example.weatherlogger.repository.GpsUtils
 import com.example.weatherlogger.repository.LocationLiveData
+import com.example.weatherlogger.room.AppDatabase
+import com.example.weatherlogger.room.WeatherDao
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -65,4 +68,19 @@ class AppModule {
     @Provides
     @Singleton
     fun provideGpsUtils(application: Application) = GpsUtils(application)
+
+    @Provides
+    @Singleton
+    fun provideDatabase(application: Application): AppDatabase {
+        return Room.databaseBuilder(application.applicationContext, AppDatabase::class.java,"main.db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherDao(database: AppDatabase): WeatherDao {
+        return database.weatherDao()
+    }
+
 }

@@ -17,6 +17,7 @@ constructor(private val repository: MyRepository): ViewModel() {
 
     private val initialTime = SystemClock.elapsedRealtime()
     private val timer = Timer()
+    private val INITIAL_DELAY = 500L
     private val INTERVAL = 3000L
     val elapsedTimeData = MutableLiveData<Long>()
 
@@ -33,18 +34,22 @@ constructor(private val repository: MyRepository): ViewModel() {
                 val newValue = (SystemClock.elapsedRealtime() - initialTime) / 1000
                 elapsedTimeData.postValue(newValue)
             }
-        }, INTERVAL, INTERVAL)
+        }, INITIAL_DELAY, INTERVAL)
     }
 
     fun getLocationData() = repository.locationData
 
+    // ask for location every INTERVAL
     val locationTick = elapsedTimeData.combineAndCompute(getLocationData()) { _, location ->
         location
     }
 
+    // ask for weather every time we get location
     val weatherAt = Transformations.switchMap(locationTick) { location ->
-        repository.getWeather(location.latitude, location.longitude)
+        repository.getWeather(location.latitude, location.longitude, Date())
     }
+
+    fun getWeatherLocally() = repository.loadWeatherLocally()
 
     override fun onCleared() {
         super.onCleared()

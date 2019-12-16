@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherlogger.R
-import com.example.weatherlogger.models.Temperature
+import com.example.weatherlogger.models.Weather
 import kotlinx.android.synthetic.main.layout_temperature_item.view.*
 
 class WeatherAdapter internal constructor() : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
-    private var mValues: ArrayList<Temperature> = ArrayList()
+    private var mValues: ArrayList<Weather> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context), parent)
@@ -30,22 +30,27 @@ class WeatherAdapter internal constructor() : RecyclerView.Adapter<WeatherAdapte
         private val tempTv: TextView = itemView.tempTv
         private val moreTv: TextView = itemView.moreDetailsTv
 
-        fun bindData(item: Temperature) {
+        fun bindData(item: Weather) {
             dateTv.text = item.at.toString()
-            tempTv.text = item.temperature.toString()
+            tempTv.text = "${item.temperature} °C"
         }
     }
 
-    fun updateAll(newValues: List<Temperature>) {
-        mValues.clear()
-        mValues.addAll(newValues)
-        notifyDataSetChanged()
-    }
-
-    fun add(newValue: Temperature) {
+    fun add(newValue: Weather) {
         mValues.add(newValue)
         notifyItemInserted(mValues.size - 1)
     }
+
+    fun setValue(newValue: Weather) {
+        if (mValues.isEmpty()) {
+            mValues.add(newValue)
+            notifyItemInserted(mValues.size - 1)
+        } else {
+            mValues[0] = newValue
+            notifyItemChanged(0)
+        }
+    }
+
 
     fun clear() {
         mValues.clear()
