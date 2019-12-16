@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @Module
 class AppModule {
     private val DEFAULT_TIME_OUT = 120L
-    private val apiURL = "http://samples.openweathermap.org/data/2.5/"
+    private val apiURL = "http://api.openweathermap.org/data/2.5/"
 
 
     @Provides

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +14,17 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherlogger.R
 import com.example.weatherlogger.factory.AppViewModelFactory
+import com.example.weatherlogger.models.Status
+import com.example.weatherlogger.models.Temperature
 import com.example.weatherlogger.repository.GPS_REQUEST
-import com.example.weatherlogger.repository.GpsUtils
 import com.example.weatherlogger.repository.LOCATION_REQUEST
+import com.example.weatherlogger.ui.WeatherAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.main_fragment.*
+import java.util.*
 import javax.inject.Inject
 
 class MainFragment : Fragment() {
@@ -34,6 +39,7 @@ class MainFragment : Fragment() {
     val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
     }
+    private val adapter by lazy { WeatherAdapter() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -42,11 +48,33 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        temperatureRv.layoutManager = LinearLayoutManager(context)
+        temperatureRv.adapter = adapter
+        observeViewModel()
     }
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
+    }
+
+    private fun observeViewModel() {
+        viewModel.weatherAt.observe(this, Observer {
+            it?.let { resource ->
+                when(resource.status) {
+                    Status.SUCCESS -> {
+                        it.data?.let {
+                            Log.d("111", "" + it)
+                            adapter.add(Temperature(it.main.temp, resource.serverTime ?: Date()))
+                        }
+                    }
+                    Status.ERROR -> {}
+                    Status.LOADING -> {}
+                }
+
+            }
+        })
+
     }
 
     private fun startLocationUpdate() {

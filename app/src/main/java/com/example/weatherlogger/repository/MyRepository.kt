@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import com.example.weatherlogger.api.ApiResponse
 import com.example.weatherlogger.api.ApiService
 import com.example.weatherlogger.models.Resource
+import com.example.weatherlogger.models.WeatherResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,6 +15,8 @@ class MyRepository @Inject constructor(val service: ApiService,
                                        val locationData: LocationLiveData,
                                        val gpsUtils: GpsUtils) {
 
+    val APP_ID = "f5906cea85954fdd25f4ec694c1857ca"
+    val UNITS = "metric"
 
     init {
     }
@@ -34,4 +37,7 @@ class MyRepository @Inject constructor(val service: ApiService,
         }.asLiveData()
     }
 
+    fun getWeather(lat: Double, lon: Double): LiveData<Resource<WeatherResponse>> {
+        return getNetworkData{ service.getWeather(lat, lon, APP_ID, UNITS) }
+    }
 }
