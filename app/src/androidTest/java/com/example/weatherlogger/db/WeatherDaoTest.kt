@@ -38,26 +38,26 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class WeatherDaoTest : DBTest() {
-  @Rule
-  @JvmField
-  var instantTaskExecutorRule = InstantTaskExecutorRule()
+    @Rule
+    @JvmField
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-  private lateinit var weather: Weather
+    private lateinit var weather: Weather
 
-  @Before
-  fun initMock() {
-    weather = MockTestUtil.mockWeather()
-  }
+    @Before
+    fun initMock() {
+        weather = MockTestUtil.mockWeather()
+    }
 
-  @Test
-  fun insertTest() {
-    MockTestUtil.calendar.set(1900, 0, 0)
-    val expectedDate = MockTestUtil.calendar.time
+    @Test
+    fun insertTest() {
+        MockTestUtil.calendar.set(1900, 0, 0)
+        val expectedDate = MockTestUtil.calendar.time
 
-    db.weatherDao().insertWeather(weather)
+        db.weatherDao().insertWeather(weather)
 
-    val loaded = LiveDataTestUtil.getValue(db.weatherDao().selectWeather())
-    assertThat(loaded.at.time, `is`(expectedDate.time))
-    assertThat(loaded.temperature, `is`(0))
-  }
+        val loaded = LiveDataTestUtil.getValue(db.weatherDao().selectWeather())
+        assertThat(loaded.at.time, `is`(expectedDate.time))
+        assertThat(loaded.temperature, `is`(0))
+    }
 }

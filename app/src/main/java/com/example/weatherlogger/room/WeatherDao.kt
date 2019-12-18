@@ -8,11 +8,6 @@ import androidx.room.Query
 import com.example.weatherlogger.models.Weather
 
 
-/**
- * Developed by skydoves on 2018-01-27.
- * Copyright (c) 2018 skydoves rights reserved.
- */
-
 @Dao
 interface WeatherDao {
     @Query("SELECT* FROM weather")

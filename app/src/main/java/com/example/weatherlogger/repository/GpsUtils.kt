@@ -13,7 +13,7 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.google.android.gms.location.SettingsClient
 
-class GpsUtils(private val context: Context) {
+open class GpsUtils(private val context: Context) {
 
     private val settingsClient: SettingsClient = LocationServices.getSettingsClient(context)
     private val locationSettingsRequest: LocationSettingsRequest?

@@ -21,37 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.example.weatherlogger.db
+package com.example.weatherlogger.api
 
-import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
-import com.example.weatherlogger.room.AppDatabase
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import retrofit2.Response
 
 
-import org.junit.After
-import org.junit.Before
-import org.junit.runner.RunWith
+@Suppress("unused")
+object ApiResponseUtil {
 
-/**
- * Developed by skydoves on 2018-03-03.
- * Copyright (c) 2018 skydoves rights reserved.
- */
+  fun <T : Any> successCall(data: T) = createCall(Response.success(data))
 
-@RunWith(AndroidJUnit4::class)
-abstract class DBTest {
-    lateinit var db: AppDatabase
-
-    @Before
-    fun initDB() {
-        db = Room.inMemoryDatabaseBuilder(
-            InstrumentationRegistry.getContext(),
-            AppDatabase::class.java
-        ).build()
-    }
-
-    @After
-    fun closeDB() {
-        db.close()
-    }
+  private fun <T : Any> createCall(response: Response<T>) = MutableLiveData<ApiResponse<T>>().apply {
+    value = ApiResponse(response)
+  } as LiveData<ApiResponse<T>>
 }
