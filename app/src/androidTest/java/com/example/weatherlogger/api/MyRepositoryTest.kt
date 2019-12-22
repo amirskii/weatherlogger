@@ -24,7 +24,6 @@
 package com.example.weatherlogger.api
 
 import android.content.Context
-import android.util.Log
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule

@@ -37,7 +37,7 @@ class MainFragment : Fragment() {
     lateinit var viewModelFactory: AppViewModelFactory
 
     val viewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        ViewModelProviders.of(activity!!, viewModelFactory).get(MainViewModel::class.java)
     }
     private val adapter by lazy { WeatherAdapter() }
 

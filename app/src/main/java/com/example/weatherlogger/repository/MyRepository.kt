@@ -44,12 +44,16 @@ class MyRepository @Inject constructor(val service: ApiService,
         }.asLiveData()
     }
 
+    fun saveWeatherResponse(resp: WeatherResponse, date: Date) {
+        GlobalScope.launch(Dispatchers.Default) {
+            weatherDao.insertWeather(Weather(resp.main.temp, date))
+        }
+    }
+
     fun getWeather(lat: Double, lon: Double, date: Date): LiveData<Resource<WeatherResponse>> {
         return object: NetworkOnlyRepository<WeatherResponse, WeatherResponse>() {
             override fun saveLoadedData(item: WeatherResponse) {
-                GlobalScope.launch(Dispatchers.Default) {
-                    weatherDao.insertWeather(Weather(item.main.temp, date))
-                }
+                saveWeatherResponse(item, date)
             }
 
             override fun fetchService(): LiveData<ApiResponse<WeatherResponse>> {

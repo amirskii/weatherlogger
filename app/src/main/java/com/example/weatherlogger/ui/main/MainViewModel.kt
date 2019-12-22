@@ -4,6 +4,7 @@ import android.os.SystemClock
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.example.weatherlogger.models.Status
 import com.example.weatherlogger.repository.GpsUtils
 import com.example.weatherlogger.repository.MyRepository
 import com.example.weatherlogger.utils.combineAndCompute
@@ -47,6 +48,16 @@ constructor(private val repository: MyRepository): ViewModel() {
     // ask for weather every time we get location
     val weatherAt = Transformations.switchMap(locationTick) { location ->
         repository.getWeather(location.latitude, location.longitude, Date())
+    }
+
+    fun saveWeather() {
+        weatherAt.value?.let { resource ->
+            if (resource.status == Status.SUCCESS) {
+                resource.data?.let {
+                    repository.saveWeatherResponse(it, Date())
+                }
+            }
+        }
     }
 
     fun getWeatherLocally() = repository.loadWeatherLocally()
