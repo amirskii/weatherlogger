@@ -56,7 +56,6 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         temperatureRv.layoutManager = LinearLayoutManager(context)
         temperatureRv.adapter = adapter
-        observeViewModel()
     }
 
     override fun onAttach(context: Context) {
@@ -65,6 +64,9 @@ class MainFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewModel.getLocationData().observe(this, Observer {
+            latLongTv.text =  getString(R.string.latLong, it.longitude, it.latitude)
+        })
         viewModel.weatherAt.observe(this, Observer {
             it?.let { resource ->
                 when(resource.status) {
@@ -88,9 +90,7 @@ class MainFragment : Fragment() {
 
 
     private fun startLocationUpdate() {
-        viewModel.getLocationData().observe(this, Observer {
-            latLongTv.text =  getString(R.string.latLong, it.longitude, it.latitude)
-        })
+        observeViewModel()
     }
 
     override fun onStart() {
@@ -109,15 +109,24 @@ class MainFragment : Fragment() {
     }
 
     private fun invokeLocationAction() {
-        when {
-            !viewModel.isGPSEnabled -> latLongTv.text = getString(R.string.enable_gps)
-            isPermissionsGranted() -> startLocationUpdate()
-            shouldShowRequestPermissionRationale() -> latLongTv.text = getString(R.string.permission_request)
-            else -> ActivityCompat.requestPermissions(
-                activity!!,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                LOCATION_REQUEST
-            )
+        if (!viewModel.isGPSEnabled) {
+            latLongTv.text = getString(R.string.enable_gps)
+            return
+        }
+        if (isPermissionsGranted())
+            startLocationUpdate()
+        else {
+            if (shouldShowRequestPermissionRationale())
+                latLongTv.text = getString(R.string.permission_request)
+            else {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ),
+                    LOCATION_REQUEST
+                )
+            }
         }
     }
 

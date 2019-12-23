@@ -49,12 +49,10 @@ class DetailsFragment : Fragment() {
             val date = it.at.toString()
             val city_name = it.data.name
             val main = it.data.main
-            val wind = it.data.wind
             val tempMax = main.temp_max.toString() + " °C"
             val tempMin = main.temp_min.toString() + " °C"
             val humidity_val = main.humidity.toString() + " %"
             val pressure_val = main.pressure.toString() + " hPa"
-            val wind_speed = wind.speed.toString() + " km/h"
             val icon = getArtResourceForWeatherCondition(it.data.weather.first().id)
             val description = it.data.weather.first().description
 
