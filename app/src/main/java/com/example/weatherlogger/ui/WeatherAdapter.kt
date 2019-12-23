@@ -1,6 +1,7 @@
 package com.example.weatherlogger.ui
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -8,7 +9,8 @@ import com.example.weatherlogger.R
 import com.example.weatherlogger.models.Weather
 import kotlinx.android.synthetic.main.layout_temperature_item.view.*
 
-class WeatherAdapter internal constructor() : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
+class WeatherAdapter internal constructor(private val delegate: Delegate) :
+        RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
     private var mValues: ArrayList<Weather> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,21 +26,27 @@ class WeatherAdapter internal constructor() : RecyclerView.Adapter<WeatherAdapte
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder internal constructor(inflater: LayoutInflater, parent: ViewGroup)
-        : RecyclerView.ViewHolder(inflater.inflate(R.layout.layout_temperature_item, parent, false)) {
+        : RecyclerView.ViewHolder(inflater.inflate(R.layout.layout_temperature_item, parent, false)),
+        View.OnClickListener {
 
+        private lateinit var item: Weather
         private val dateTv: TextView = itemView.dateTv
         private val tempTv: TextView = itemView.tempTv
         private val moreTv: TextView = itemView.moreDetailsTv
 
-        fun bindData(item: Weather) {
-            dateTv.text = item.at.toString()
-            tempTv.text = "${item.temperature} °C"
+        init {
+            itemView.setOnClickListener(this)
         }
-    }
 
-    fun add(newValue: Weather) {
-        mValues.add(newValue)
-        notifyItemInserted(mValues.size - 1)
+        override fun onClick(p0: View?) {
+            delegate.onItemClick(this.item)
+        }
+
+        fun bindData(item: Weather) {
+            this.item = item
+            dateTv.text = item.at.toString()
+            tempTv.text = "${item.data.main.temp} °C"
+        }
     }
 
     fun setValue(newValue: Weather) {
@@ -51,10 +59,8 @@ class WeatherAdapter internal constructor() : RecyclerView.Adapter<WeatherAdapte
         }
     }
 
-
-    fun clear() {
-        mValues.clear()
-        notifyDataSetChanged()
+    interface Delegate {
+        fun onItemClick(item: Weather)
     }
 }
 

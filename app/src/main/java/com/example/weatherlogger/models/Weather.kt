@@ -10,7 +10,7 @@ import java.util.*
 
 @Entity(tableName = "weather")
 data class Weather(
-    val temperature: Int,
+    val data: WeatherResponse,
     val at: Date,
     @PrimaryKey val id: Int = 0
 )

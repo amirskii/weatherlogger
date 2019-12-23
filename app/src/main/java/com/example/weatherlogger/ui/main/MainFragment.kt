@@ -15,12 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weatherlogger.MainActivity
 import com.example.weatherlogger.R
 import com.example.weatherlogger.factory.AppViewModelFactory
 import com.example.weatherlogger.models.Status
 import com.example.weatherlogger.models.Weather
 import com.example.weatherlogger.repository.GPS_REQUEST
 import com.example.weatherlogger.repository.LOCATION_REQUEST
+import com.example.weatherlogger.ui.DetailsFragment
 import com.example.weatherlogger.ui.WeatherAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -39,7 +41,11 @@ class MainFragment : Fragment() {
     val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(activity!!, viewModelFactory).get(MainViewModel::class.java)
     }
-    private val adapter by lazy { WeatherAdapter() }
+    private val adapter by lazy { WeatherAdapter(object : WeatherAdapter.Delegate {
+        override fun onItemClick(item: Weather) {
+            (activity as MainActivity).showFragment(DetailsFragment.newInstance())
+        }
+    }) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -75,7 +81,7 @@ class MainFragment : Fragment() {
         })
         viewModel.getWeatherLocally().observe(this, Observer {
             if (it != null)
-                adapter.setValue(Weather(it.temperature, it.at))
+                adapter.setValue(it)
         })
     }
 

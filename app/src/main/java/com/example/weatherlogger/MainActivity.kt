@@ -3,6 +3,7 @@ package com.example.weatherlogger
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.weatherlogger.factory.AppViewModelFactory
 import com.example.weatherlogger.ui.main.MainFragment
@@ -49,4 +50,12 @@ class MainActivity : DaggerAppCompatActivity() {
 
         return true
     }
+
+    fun showFragment(fragment: Fragment) {
+        val ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.container, fragment)
+        ft.addToBackStack(null)
+        ft.commit()
+    }
+
 }

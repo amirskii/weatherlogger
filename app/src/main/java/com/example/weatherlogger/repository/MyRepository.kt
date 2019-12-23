@@ -46,7 +46,7 @@ class MyRepository @Inject constructor(val service: ApiService,
 
     fun saveWeatherResponse(resp: WeatherResponse, date: Date) {
         GlobalScope.launch(Dispatchers.Default) {
-            weatherDao.insertWeather(Weather(resp.main.temp, date))
+            weatherDao.insertWeather(Weather(resp, date))
         }
     }
 
