@@ -8,7 +8,6 @@ data class WeatherResponse (
     @SerializedName("base") val base : String,
     @SerializedName("main") val main : Main,
     @SerializedName("visibility") val visibility : Int,
-    @SerializedName("wind") val wind : Wind,
     @SerializedName("clouds") val clouds : Clouds,
     @SerializedName("dt") val dt : Int,
     @SerializedName("sys") val sys : Sys,
@@ -48,9 +47,4 @@ data class Sys (
     @SerializedName("country") val country : String,
     @SerializedName("sunrise") val sunrise : Int,
     @SerializedName("sunset") val sunset : Int
-)
-
-data class Wind (
-    @SerializedName("speed") val speed : Int,
-    @SerializedName("deg") val deg : Int
 )

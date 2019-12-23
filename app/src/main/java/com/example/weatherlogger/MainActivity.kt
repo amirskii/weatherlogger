@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.example.weatherlogger.factory.AppViewModelFactory
 import com.example.weatherlogger.ui.main.MainFragment
@@ -53,6 +54,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     fun showFragment(fragment: Fragment) {
         val ft = supportFragmentManager.beginTransaction()
+        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         ft.replace(R.id.container, fragment)
         ft.addToBackStack(null)
         ft.commit()
