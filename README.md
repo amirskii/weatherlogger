@@ -10,19 +10,18 @@ Following technologies have been used:
 
 
 Requirements have been met:
-● Compatibility with Android 4.1 and onwards
-● Code quality, readability and consistent code style
-● Best UI practices (Material design)
-● Local data storage
-● Unit test (JUnit/Robolectric)
+- Compatibility with Android 4.1 and onwards
+- Code quality, readability and consistent code style
+- Best UI practices (Material design)
+- Local data storage
+- Unit test (JUnit/Robolectric)
 
 Optional Requirements:
-● Implement ‘More details’ screen (with ability to view more detailed information
-about weather data returned from API)
-● Refresh the weather data periodically
-● Use Kotlin instead of Java for MainActivity
+- Implement ‘More details’ screen (with ability to view more detailed information about weather data returned from API)
+- Refresh the weather data periodically
+- Use Kotlin instead of Java for MainActivity
 
 ## Screenshots
 
 [<img src="/screenshot/main.png" align="left" width="200" hspace="10" vspace="10">](/readme/main.png)
-[<img src="/screenshot/detaiks.png" align="center" width="200" hspace="10" vspace="10">](/readme/details.png)
+[<img src="/screenshot/details.png" align="center" width="200" hspace="10" vspace="10">](/readme/details.png)
