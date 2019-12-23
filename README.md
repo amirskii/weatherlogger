@@ -21,3 +21,8 @@ Optional Requirements:
 about weather data returned from API)
 ● Refresh the weather data periodically
 ● Use Kotlin instead of Java for MainActivity
+
+## Screenshots
+
+[<img src="/screenshot/main.png" align="left" width="200" hspace="10" vspace="10">](/readme/main.png)
+[<img src="/screenshot/detaiks.png" align="center" width="200" hspace="10" vspace="10">](/readme/details.png)
